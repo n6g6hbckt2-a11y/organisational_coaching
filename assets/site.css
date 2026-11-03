@@ -1,0 +1,68 @@
+/* Static-site replacements for behaviour WordPress/Elementor JS used to provide. */
+
+/* Desktop menu: show sub-menus on hover / keyboard focus (was SmartMenus JS) */
+.elementor-nav-menu--main .elementor-nav-menu > li:hover > ul,
+.elementor-nav-menu--main .elementor-nav-menu > li:focus-within > ul {
+  display: block;
+  left: 0;
+  top: 100%;
+  z-index: 9999;
+  width: auto;
+  min-width: 12em;
+}
+
+/* Mobile dropdown: sub-menus open when their parent is toggled */
+.elementor-nav-menu--dropdown li.oc-open > ul { display: block; }
+
+/* Elementor popup (dialog) wrapper */
+.oc-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .8);
+  padding: 20px;
+}
+.oc-popup[hidden] { display: none !important; }
+.oc-popup.dialog-type-lightbox { pointer-events: auto; }
+.oc-popup [data-elementor-type="popup"] { display: block !important; width: 100%; }
+.oc-popup .dialog-close-button { display: block !important; }
+.oc-popup .dialog-widget-content {
+  position: relative;
+  width: 640px;
+  max-width: 100%;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  animation: ocZoomIn .35s ease;
+}
+.oc-popup .dialog-close-button {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  z-index: 2;
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+[data-elementor-type="popup"]:not(.oc-in-popup) { display: none; }
+@keyframes ocZoomIn { from { opacity: 0; transform: scale3d(.6, .6, .6); } to { opacity: 1; transform: none; } }
+
+/* Make-column-clickable plugin */
+[data-column-clickable] { cursor: pointer; }
+
+/* Toggle widget content is shown by JS; keep closed by default */
+.elementor-toggle .elementor-tab-content { display: none; }
+.elementor-toggle .elementor-tab-title.elementor-active + .elementor-tab-content { display: block; }
+
+/* Form status message */
+.oc-form-note { margin-top: 10px; font-size: 15px; }
+
+/* Respect reduced-motion: show animated elements immediately */
+@media (prefers-reduced-motion: reduce) {
+  .elementor-invisible { visibility: visible !important; }
+}
