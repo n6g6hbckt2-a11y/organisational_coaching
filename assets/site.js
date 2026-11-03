@@ -92,10 +92,21 @@
       });
     });
 
-    // Desktop menu: keep aria in sync for keyboard users
-    document.querySelectorAll('.elementor-nav-menu--main li.menu-item-has-children > a').forEach(function (a) {
+    // Desktop menu: short close delay (as the original menu had) so the drop-down
+    // doesn't vanish if the cursor briefly leaves it
+    document.querySelectorAll('.elementor-nav-menu--main .elementor-nav-menu > li.menu-item-has-children').forEach(function (li) {
+      var a = li.querySelector(':scope > a');
       a.setAttribute('aria-haspopup', 'true');
       a.classList.add('has-submenu');
+      var timer = null;
+      li.addEventListener('mouseenter', function () {
+        clearTimeout(timer);
+        li.parentElement.querySelectorAll(':scope > li.oc-hover').forEach(function (o) { if (o !== li) o.classList.remove('oc-hover'); });
+        li.classList.add('oc-hover');
+      });
+      li.addEventListener('mouseleave', function () {
+        timer = setTimeout(function () { li.classList.remove('oc-hover'); }, 400);
+      });
     });
   }
 
