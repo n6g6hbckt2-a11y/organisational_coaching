@@ -1,14 +1,14 @@
-/* The floating wine connoisseur */
+/* The wine connoisseur – strolls along the bottom of the page and peeks out from behind photos */
 #wine-man {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 9990;
-  width: 116px;
+  width: 120px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity .6s ease;
-  will-change: transform;
+  transition: opacity .5s ease;
+  will-change: transform, clip-path;
 }
 #wine-man .wm-figure {
   display: block;
@@ -18,26 +18,53 @@
   background: none;
   cursor: pointer;
   pointer-events: auto;
-  filter: drop-shadow(0 6px 10px rgba(8, 21, 73, .25));
-  animation: wmBob 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(8, 21, 73, .22));
 }
 #wine-man .wm-figure:focus-visible { outline: 2px solid #1c3ee5; outline-offset: 4px; border-radius: 12px; }
+#wine-man svg { display: block; width: 100%; height: auto; overflow: visible; }
 #wine-man .wm-figure.wm-flip svg { transform: scaleX(-1); }
-#wine-man svg { display: block; width: 100%; height: auto; overflow: visible; transition: transform .3s; }
 
-/* raise the bottle and swirl the glass while he talks */
-#wine-man .wm-bottle-arm { transform-origin: 86px 88px; transition: transform .4s ease; }
-#wine-man .wm-glass { transform-origin: 24px 112px; }
-#wine-man .wm-head { transform-origin: 60px 60px; }
-#wine-man.wm-talking .wm-bottle-arm { transform: rotate(-38deg); }
+/* pivot points (SVG user units) */
+#wine-man .wm-body { transform-origin: 62px 180px; }
+#wine-man .wm-leg-far { transform-origin: 52px 124px; }
+#wine-man .wm-leg-near { transform-origin: 68px 124px; }
+#wine-man .wm-arm-far { transform-origin: 44px 92px; }
+#wine-man .wm-arm-near { transform-origin: 82px 92px; transition: transform .45s ease; }
+#wine-man .wm-head { transform-origin: 62px 66px; }
+#wine-man .wm-glass { transform-origin: 42px 124px; }
+#wine-man .wm-shadow { transform-origin: 64px 183px; }
+
+/* ---- walking: striding legs, swinging arms, a bounce on every step ---- */
+#wine-man.wm-walking .wm-leg-near { animation: wmStride .9s ease-in-out infinite; }
+#wine-man.wm-walking .wm-leg-far { animation: wmStride .9s ease-in-out -.45s infinite; }
+#wine-man.wm-walking .wm-arm-far { animation: wmSwing .9s ease-in-out infinite; }
+#wine-man.wm-walking .wm-arm-near { animation: wmSwing .9s ease-in-out -.45s infinite; }
+#wine-man.wm-walking .wm-body { animation: wmStep .45s ease-in-out infinite; }
+#wine-man.wm-walking .wm-head { animation: wmHeadBob .9s ease-in-out infinite; }
+#wine-man.wm-walking .wm-shadow { animation: wmShadow .45s ease-in-out infinite; }
+
+@keyframes wmStride { 0%, 100% { transform: rotate(24deg); } 50% { transform: rotate(-24deg); } }
+@keyframes wmSwing { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+@keyframes wmStep { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes wmHeadBob { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes wmShadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.85); opacity: .75; } }
+
+/* ---- talking: raise the bottle, swirl the glass, nod knowingly ---- */
+#wine-man.wm-talking .wm-arm-near { animation: none; transform: rotate(-55deg); }
 #wine-man.wm-talking .wm-glass { animation: wmSwirl .9s ease-in-out 3; }
 #wine-man.wm-talking .wm-head { animation: wmNod 1.6s ease-in-out infinite; }
+@keyframes wmSwirl { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg); } 75% { transform: rotate(14deg); } }
+@keyframes wmNod { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } }
+
+/* ---- peeking from behind a photo: lean out with a cheeky tilt ---- */
+#wine-man.wm-peeking .wm-body { transition: transform .5s ease; transform: rotate(-7deg); }
+#wine-man.wm-peeking .wm-shadow { opacity: 0; }
 
 /* speech bubble, in the site's own blue */
 #wine-man .wm-bubble {
   position: absolute;
-  bottom: calc(100% - 10px);
-  left: 60%;
+  bottom: calc(100% - 14px);
+  left: 58%;
   width: max-content;
   max-width: 230px;
   padding: 10px 14px;
@@ -53,15 +80,11 @@
   transform-origin: bottom left;
   transition: opacity .25s, transform .25s;
 }
-#wine-man.wm-left .wm-bubble { left: auto; right: 60%; border-radius: 16px 16px 4px 16px; transform-origin: bottom right; }
+#wine-man.wm-left .wm-bubble { left: auto; right: 58%; border-radius: 16px 16px 4px 16px; transform-origin: bottom right; }
 #wine-man.wm-talking .wm-bubble { opacity: 1; transform: none; }
 
-@keyframes wmBob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
-@keyframes wmSwirl { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
-@keyframes wmNod { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-5deg); } }
-
 @media (max-width: 767px) {
-  #wine-man { width: 70px; }
+  #wine-man { width: 86px; }
   #wine-man .wm-bubble { max-width: 190px; font-size: 13px; }
 }
 @media print { #wine-man { display: none; } }
