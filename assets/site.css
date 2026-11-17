@@ -85,3 +85,7 @@
 .oc-whatsapp:focus-visible{outline:3px solid #1C3EE5;outline-offset:3px}
 @media (max-width:767px){.oc-whatsapp{right:14px;bottom:14px;width:52px;height:52px}}
 @media print{.oc-whatsapp{display:none}}
+
+/* Post card thumbnails: fill the card's image area and crop neatly (replaces Elementor's runtime fit logic) */
+.elementor-posts-container.elementor-has-item-ratio .elementor-post__thumbnail{position:relative;overflow:hidden}
+.elementor-posts-container.elementor-has-item-ratio .elementor-post__thumbnail img{position:absolute;top:0;left:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;transform:none!important}
