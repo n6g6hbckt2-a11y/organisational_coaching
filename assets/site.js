@@ -297,7 +297,15 @@
     document.body.appendChild(a);
   }
 
+  /* ---------- Post card image cropping (Elementor adds this class at runtime) ---------- */
+  function initPostRatios() {
+    document.querySelectorAll('.elementor-posts-container').forEach(function (c) {
+      if (c.querySelector('.elementor-post__thumbnail')) c.classList.add('elementor-has-item-ratio');
+    });
+  }
+
   function init() {
+    initPostRatios();
     initAnimations();
     initMenus();
     initPopups();
