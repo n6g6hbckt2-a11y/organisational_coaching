@@ -78,3 +78,10 @@
 @media (prefers-reduced-motion: reduce) {
   .elementor-invisible { visibility: visible !important; }
 }
+
+/* Floating WhatsApp button */
+.oc-whatsapp{position:fixed;right:20px;bottom:20px;z-index:9999;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .2s ease,box-shadow .2s ease}
+.oc-whatsapp:hover,.oc-whatsapp:focus-visible{transform:scale(1.08);box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.oc-whatsapp:focus-visible{outline:3px solid #1C3EE5;outline-offset:3px}
+@media (max-width:767px){.oc-whatsapp{right:14px;bottom:14px;width:52px;height:52px}}
+@media print{.oc-whatsapp{display:none}}
