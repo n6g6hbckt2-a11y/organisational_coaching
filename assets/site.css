@@ -89,3 +89,14 @@
 /* Post card thumbnails: fill the card's image area and crop neatly (replaces Elementor's runtime fit logic) */
 .elementor-posts-container.elementor-has-item-ratio .elementor-post__thumbnail{position:relative;overflow:hidden}
 .elementor-posts-container.elementor-has-item-ratio .elementor-post__thumbnail img{position:absolute;top:0;left:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover;transform:none!important}
+
+/* Cookie consent banner */
+.oc-cookie{position:fixed;left:20px;bottom:20px;z-index:10000;max-width:420px;background:#fff;color:#1a1a2e;border:1px solid #d9d9e3;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:16px 18px;font-size:14px;line-height:1.5}
+.oc-cookie p{margin:0 0 12px}
+.oc-cookie a{color:#1C3EE5;text-decoration:underline}
+.oc-cookie-btns{display:flex;gap:10px;justify-content:flex-end}
+.oc-cookie button{font:inherit;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;border:1px solid #1C3EE5}
+.oc-cookie-accept{background:#1C3EE5;color:#fff}
+.oc-cookie-decline{background:#fff;color:#1C3EE5}
+@media (max-width:767px){.oc-cookie{left:12px;right:84px;bottom:12px;max-width:none}}
+@media print{.oc-cookie{display:none}}

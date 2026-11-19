@@ -304,6 +304,48 @@
     });
   }
 
+  /* ---------- Cookie consent + Google Analytics (GA4) ----------
+     Analytics only loads after the visitor clicks Accept. Choice stored in localStorage. */
+  var GA_ID = 'G-8D65ZSGGC3';
+  var CONSENT_KEY = 'oc-cookie-consent';
+  function getConsent() { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } }
+  function setConsent(v) { try { localStorage.setItem(CONSENT_KEY, v); } catch (e) {} }
+  function loadAnalytics() {
+    if (window.__ocGaLoaded) return; window.__ocGaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID, { anonymize_ip: true });
+  }
+  function privacyHref() {
+    var a = document.querySelector('a[href$="privacy-policy/"]');
+    return a ? a.getAttribute('href') : '/privacy-policy/';
+  }
+  function showBanner() {
+    if (document.querySelector('.oc-cookie')) return;
+    var d = document.createElement('div');
+    d.className = 'oc-cookie'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Cookie consent');
+    d.innerHTML = '<p>We use analytics cookies to understand how visitors use our site. ' +
+      '<a href="' + privacyHref() + '">Privacy policy</a></p>' +
+      '<div class="oc-cookie-btns"><button type="button" class="oc-cookie-decline">Decline</button>' +
+      '<button type="button" class="oc-cookie-accept">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('.oc-cookie-accept').addEventListener('click', function () { setConsent('granted'); d.remove(); loadAnalytics(); });
+    d.querySelector('.oc-cookie-decline').addEventListener('click', function () { setConsent('denied'); d.remove(); });
+  }
+  function initConsent() {
+    var c = getConsent();
+    if (c === 'granted') loadAnalytics();
+    else if (c !== 'denied') showBanner();
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('.oc-cookie-settings');
+      if (t) { e.preventDefault(); try { localStorage.removeItem(CONSENT_KEY); } catch (x) {} showBanner(); }
+    });
+  }
+
   function init() {
     initPostRatios();
     initAnimations();
@@ -314,6 +356,7 @@
     initShare();
     initForms();
     initWhatsApp();
+    initConsent();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
